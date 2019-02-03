@@ -12,6 +12,7 @@
   const USERNAME = process.env.USERNAME;
   const PASSWORD = process.env.PASSWORD;
   const WEBSITE_YEAR = process.env.WEBSITE_YEAR;
+  const POSSIBLE_OPT_OUT = process.env.POSSIBLE_OPT_OUT;
 
   const NAME_LIST_PATH = process.env.NAME_LIST_PATH;
   const AREA_CODE_LIST_PATH = process.env.AREA_CODE_LIST_PATH;
@@ -57,7 +58,8 @@
               result = await tracegenieSearcher.search(
                 name,
                 areaCode,
-                WEBSITE_YEAR
+                WEBSITE_YEAR,
+                POSSIBLE_OPT_OUT
               );
 
               console.log(

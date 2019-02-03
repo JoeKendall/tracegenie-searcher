@@ -52,7 +52,7 @@
     }
   }
 
-  async function search(SURNAME, AREACODE, WEBSITE_YEAR) {
+  async function search(SURNAME, AREACODE, WEBSITE_YEAR, POSSIBLE_OPT_OUT) {
     let page = await browser.newPage();
     let RANDOM_TIMEOUT_TIME = Math.floor((Math.random() * 40000) + 50000);
     await page.setDefaultNavigationTimeout(RANDOM_TIMEOUT_TIME);
@@ -107,6 +107,7 @@
               var NAME_SELECTOR = ".c200 b";
               var ADDRESS_SELECTOR = "tr:nth-child(2) td b:first-child";
             } else {
+              await page.waitFor(RANDOM_TIMEOUT_TIME);
               await page.goto(
                 "https://www.tracegenie.com/amember4/amember/1DAY/14ntmysqliunion9.php?" +
                   pageString(PAGE_NUMBER) +
@@ -135,10 +136,10 @@
                 person.surname
                   .toUpperCase()
                   .split(" ")
-                  .includes(SURNAME.toUpperCase().trim()) &&
-                (await nameInLatestYear(person, SURNAME))
+                  .includes(SURNAME.toUpperCase().trim())
               ) {
-                results.push(person);
+                  if(POSSIBLE_OPT_OUT) await nameInLatestYear(person, SURNAME)
+                  results.push(person);
               }
             }
 
