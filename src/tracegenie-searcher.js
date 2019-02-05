@@ -10,7 +10,7 @@
       (async () => {
         try {
           const OPTIONS = {
-            //headless: false
+            headless: false
           };
           browser = await puppeteer.launch(OPTIONS);
           let page = await browser.newPage();
@@ -52,10 +52,10 @@
     }
   }
 
-  async function search(SURNAME, AREACODE, WEBSITE_YEAR) {
+  async function search(SURNAME, AREACODE, WEBSITE_YEAR, POSSIBLE_OPT_OUT) {
     let page = await browser.newPage();
     let RANDOM_TIMEOUT_TIME = Math.floor((Math.random() * 40000) + 50000);
-    await page.setDefaultNavigationTimeout(RANDOM_TIMEOUT_TIME);
+    //await page.setDefaultNavigationTimeout(RANDOM_TIMEOUT_TIME);
     return new Promise((resolve, reject) => {
       let PAGE_NUMBER = 0;
       let ATTEMPT_NUMBER = 0;
@@ -136,7 +136,7 @@
                   .toUpperCase()
                   .split(" ")
                   .includes(SURNAME.toUpperCase().trim()) &&
-                (await nameInLatestYear(person, SURNAME))
+                (await nameInLatestYear(person, SURNAME, POSSIBLE_OPT_OUT))
               ) {
                 results.push(person);
               }
@@ -155,8 +155,12 @@
     });
   }
 
-  function nameInLatestYear(person, SURNAME) {
+  function nameInLatestYear(person, SURNAME, POSSIBLE_OPT_OUT) {
     return new Promise(async (resolve, reject) => {
+      if(!POSSIBLE_OPT_OUT) {
+        resolve(true);
+        return;
+      }
       let page = await browser.newPage();
       await page.setDefaultNavigationTimeout(90000);
 
